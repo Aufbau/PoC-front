@@ -1,12 +1,10 @@
-version: "3.7"
+# version: "3.7"
 
-services:
+# services:
   
-  worker:
-    build: ./
-    volumes:
-      - type: bind
-        source: ./worker_app
-        target: /app
-    ports:
-      - "5000:5000"
+#   worker:
+#     build: ./
+#     volumes:
+#       - type: bind
+#         source: ./worker_app
+#         target: /app
