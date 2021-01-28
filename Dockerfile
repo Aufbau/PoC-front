@@ -2,6 +2,7 @@ FROM python:3.8.7-alpine3.12
 WORKDIR /app
 ADD requirements.txt ./
 
+# Fix for psycopg2 not installing via pip. SRC: https://stackoverflow.com/a/47871121 
 RUN \
  apk add --no-cache postgresql-libs && \
  apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
