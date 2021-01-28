@@ -1,3 +1,2 @@
 redis
-pg8000
-SQLAlchemy
+psycopg2
