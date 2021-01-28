@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   
-  voteapp:
+  worker:
     build: ./
     volumes:
       - type: bind
