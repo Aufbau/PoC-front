@@ -6,7 +6,7 @@ services:
     build: ./
     volumes:
       - type: bind
-        source: ./
+        source: ./worker_app
         target: /app
     ports:
       - "5000:5000"
