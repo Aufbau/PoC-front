@@ -8,19 +8,6 @@ import psycopg2
 import signal
 
 ################################################
-# Housekeeping
-
-# Docker sends a SIGTERM on shutting down the container. 
-# This code handles that case.
-def sigterm_handler(_signo, _stack_frame):
-  logging.info("Worker shutting down ...")
-  sys.exit(0)
-
-signal.signal(signal.SIGTERM, sigterm_handler)
-
-logging.basicConfig(level=logging.INFO)
-
-################################################
 # CONSTANTS
 
 DB_SERVER_INFO = "dbname='postgres' user='postgres' host='super-db' password='postgres'"
@@ -31,6 +18,8 @@ RETRY_INTERVALS = [1.5, 2.2, 3.3, 5.0, 7.4, 11.0, 16.4, 24.5, 36.6, 54.6]
 
 ################################################
 
+r = None
+conn = None
 
 cursor = None
 item = None
@@ -78,6 +67,20 @@ def refreshDBConnection():
     logging.error('Db server (super-db) timed out. Worker shutting down ...')
     sys.exit(1)
 
+################################################
+# Housekeeping
+
+# Docker sends a SIGTERM on shutting down the container. 
+# This code handles that case.
+def sigterm_handler(_signo, _stack_frame):
+  conn.rollback()
+  conn.close()
+  logging.info("Worker shutting down ...")
+  sys.exit(0)
+
+signal.signal(signal.SIGTERM, sigterm_handler)
+
+logging.basicConfig(level=logging.INFO)
 
 ################################################
 # Actual code
