@@ -5,7 +5,7 @@ import time
 import logging
 import psycopg2
 
-# Set this to level=loging.INFO to see all the debugging issues.
+# Set this to level=loging.INFO to see all the debugging messages.
 logging.basicConfig(level=logging.WARNING)
 
 DB_SERVER_INFO = "dbname='postgres' user='postgres' host='super-db' password='postgres'"
