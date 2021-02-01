@@ -125,7 +125,7 @@ except:
 # This is the main worker loop.
 # We pop items from redis. We INSERT them into our db.
 while True:
-  logging.info("Worker still running ...")
+  
   while item == None:
     # Keep this worker running by calling redis every 4 seconds.
     #   r.blpop returns None when timeout ends and there was
@@ -144,6 +144,7 @@ while True:
   try:
     cursor.execute("INSERT INTO votes VALUES(%s, %s)", (vote["client_id"], vote["vote_option"]))
     conn.commit()
+    logging.info("INSERTED (client_id: {}, vote_option: {})  ...".format(vote["client_id"], vote["vote_option"]))
 
     # Might require a 'while not committed: ... keep trying to commit?'
   except psycopg2.errors.UniqueViolation:
@@ -151,6 +152,7 @@ while True:
     conn.rollback()
     cursor.execute("UPDATE votes SET vote_option = %s WHERE client_id = %s", (vote["vote_option"], vote["client_id"]))
     conn.commit()
+    logging.info("UPDATED (client_id: {}, vote_option: {})  ...".format(vote["client_id"], vote["vote_option"]))
   except:
     # Maybe db went down.
     conn = refreshDBConnection()
